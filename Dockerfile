@@ -23,8 +23,18 @@ COPY --from=builder /app /usr/share/nginx/html
 # Configura as permissões para o Nginx ler os arquivos corretamente
 RUN chown -R nginx:nginx /usr/share/nginx/html
 
+# Configura o Nginx para servir a página corretamente
+RUN echo 'server { \
+    listen 80; \
+    location / { \
+        root /usr/share/nginx/html; \
+        index index.html index.htm; \
+        try_files $uri $uri/ /index.html; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
+
 # Expõe a porta 80, que é a porta padrão para o Coolify fazer o roteamento
-EXPOSE 82
+EXPOSE 80
 
 # Inicia o Nginx no modo em primeiro plano
 CMD ["nginx", "-g", "daemon off;"]
