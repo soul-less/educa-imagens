@@ -154,15 +154,8 @@
         window.addEventListener('DOMContentLoaded', carregarGaleria);
 
         function copyLink(filename) {
-            // Pega a URL atual, remove o 'index.html' se estiver na URL e anexa o nome do arquivo
-            let currentUrl = window.location.href;
-            if (currentUrl.endsWith('index.html')) {
-                currentUrl = currentUrl.slice(0, -10);
-            } else if (!currentUrl.endsWith('/')) {
-                currentUrl += '/';
-            }
-            
-            const fileUrl = currentUrl + filename;
+            // Cria um objeto URL para resolver o caminho absoluto baseado na URL atual do servidor
+            const fileUrl = new URL(filename, window.location.href).href;
 
             // Usa a API de Clipboard para copiar
             navigator.clipboard.writeText(fileUrl).then(() => {
